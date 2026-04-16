@@ -16,14 +16,18 @@ inngest_client = inngest.Inngest(
     serializer=inngest.PydanticSerializer()
 )
 
-app = FastAPI()
+
 
 @inngest_client.create_function(
-    fn_id="Rag: Ingest PDF",
+    fn_id="RAG: Ingest PDFs",
     trigger=inngest.TriggerEvent(event="rag/ingest_pdf"),
 )
 
-async def rag_ingest_pdf():
+async def rag_ingest_pdf(event):
+    # Print logs here
+    logging.info("Ingesting PDF...")
     return {"message": "PDF ingested successfully!"}
+
+app = FastAPI()
     
 inngest.fast_api.serve(app, inngest_client, [rag_ingest_pdf])
